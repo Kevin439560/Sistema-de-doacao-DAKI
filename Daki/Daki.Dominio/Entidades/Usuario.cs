@@ -17,6 +17,7 @@ namespace Daki.Dominio.Entidades
         public ICollection<Anuncio> Anuncios { get; private set; } = new List<Anuncio>();
         public ICollection<Interesse> Interesses { get; private set; } = new List<Interesse>();
 
+        // Construtor vazio exigido pelo Entity Framework
         protected Usuario() { }
 
         public Usuario(string nome, string email, string passwordHash, string fone)

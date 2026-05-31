@@ -15,11 +15,13 @@ namespace Daki.Dominio.Entidades
         public Categoria Categoria { get; private set; }
         public Status Status { get; private set; }
 
+        // Coleções (Navegação)
         public Usuario Usuario { get; private set; }
         public Endereco Endereco { get; private set; }
         public ICollection<ImagemAnuncio> Imagens { get; private set; } = new List<ImagemAnuncio>();
         public ICollection<Interesse> Interesses { get; private set; } = new List<Interesse>();
 
+        // Construtor vazio exigido pelo Entity Framework
         protected Anuncio() { }
 
         public Anuncio(Guid usuarioId, Guid enderecoId, string titulo, string descricao, Categoria categoria)
@@ -30,9 +32,10 @@ namespace Daki.Dominio.Entidades
             Titulo = titulo;
             Descricao = descricao;
             Categoria = categoria;
-            Status = Status.Ativo;
+            Status = Status.Ativo; // Todo anúncio nasce ativo
         }
 
+        // Métodos de Regra de Negócio
         public void Reservar()
         {
             Status = Status.Reservado;
