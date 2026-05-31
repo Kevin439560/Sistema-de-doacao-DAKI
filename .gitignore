@@ -55,3 +55,10 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Arquivos e pastas gerados pelo Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
