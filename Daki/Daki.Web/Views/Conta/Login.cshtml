@@ -1,0 +1,56 @@
+﻿@model Daki.Web.Models.UsuarioLoginViewModel
+
+@{
+    ViewData["Title"] = "Entrar - Daki";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4 fw-bold" style="color: #FF7F50;">Bem-vindo de volta!</h2>
+                    <p class="text-center text-muted mb-4">Entre com sua conta para continuar.</p>
+
+                    @if (TempData["MensagemSucesso"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["MensagemSucesso"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger fw-bold mb-3 text-center"></div>
+
+                    <form asp-controller="Conta" asp-action="Login" method="post">
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" type="email" class="form-control" placeholder="nome@exemplo.com" />
+                            <label asp-for="Email">E-mail</label>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Senha" type="password" class="form-control" placeholder="Senha" />
+                            <label asp-for="Senha">Senha</label>
+                            <span asp-validation-for="Senha" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-lg text-white" style="background-color: #FF7F50;">Entrar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="card-footer text-center py-3 border-0 bg-light">
+                    <div class="small">
+                        <a href="/Usuario/Cadastrar" class="text-decoration-none">Ainda não tem conta? Cadastre-se!</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

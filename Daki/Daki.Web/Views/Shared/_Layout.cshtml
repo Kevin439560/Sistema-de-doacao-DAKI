@@ -27,6 +27,28 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-dark fw-bold">Olá, @User.Identity.Name!</span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Conta" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn nav-link text-danger border-0 bg-transparent">Sair</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Conta" asp-action="Login">Entrar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn text-white ms-2" style="background-color: #FF7F50;" asp-controller="Usuario" asp-action="Cadastrar">Criar Conta</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>

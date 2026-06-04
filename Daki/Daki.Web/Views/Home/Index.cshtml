@@ -1,8 +1,91 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Daki.Dominio.Entidades.Anuncio>
+
+@{
+    ViewData["Title"] = "Vitrine de Doações - Daki";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="py-5 mb-5 text-center bg-light rounded-3 shadow-sm border-0" style="background: linear-gradient(135deg, #fff5f0 0%, #ffffff 100%);">
+    <div class="container py-4">
+        <h1 class="display-5 fw-bold" style="color: #FF7F50;">Descubra Doações Próximas de Si</h1>
+        <p class="col-lg-8 mx-auto lead text-muted">
+            A Daki liga pessoas que têm itens para doar com quem mais precisa. Navegue pelos anúncios abaixo e faça parte desta corrente de solidariedade.
+        </p>
+        @if (User.Identity != null && !User.Identity.IsAuthenticated)
+        {
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3">
+                <a href="/Usuario/Cadastrar" class="btn btn-lg text-white px-4 gap-3" style="background-color: #FF7F50;">Começar a Doar</a>
+                <a href="/Conta/Login" class="btn btn-outline-secondary btn-lg px-4">Fazer Login</a>
+            </div>
+        }
+    </div>
 </div>
+
+<div class="container">
+    <h3 class="mb-4 fw-bold text-secondary">Itens Recentes</h3>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <div class="text-muted fs-4 mb-3">Ainda não existem anúncios ativos disponíveis.</div>
+            <p class="text-muted">Seja o primeiro a publicar um item para doação!</p>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var anuncio in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0 rounded-lg overflow-hidden transition-card">
+
+                        @{
+                            var imagemPrincipal = anuncio.Imagens?.FirstOrDefault(i => i.Principal)?.UrlImagem
+                                                  ?? "https://placehold.co/600x400/f8f9fa/ff7f50?text=Daki";
+                        }
+                        <img src="@imagemPrincipal" class="card-img-top" alt="@anuncio.Titulo" style="height: 220px; object-fit: cover;">
+
+                        <div class="card-body p-4">
+                            <span class="badge rounded-pill mb-2 px-3 py-2 text-white" style="background-color: #FF7F50;">
+                                @anuncio.Categoria
+                            </span>
+
+                            <h5 class="card-title fw-bold text-dark text-truncate mb-2">@anuncio.Titulo</h5>
+
+                            <p class="card-text text-muted text-truncate-3-lines mb-3">
+                                @anuncio.Descricao
+                            </p>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0 p-4 pt-0 d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="bi bi-geo-alt-fill me-1" style="color: #FF7F50;"></i>
+                                @anuncio.Endereco?.Cidade - @anuncio.Endereco?.UF
+                            </small>
+                            <a href="/Anuncio/Detalhes/@anuncio.Id" class="btn btn-sm text-white px-3" style="background-color: #FF7F50;">
+                                Ver Detalhes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .text-truncate-3-lines {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .transition-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        .transition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1) !important;
+        }
+</style>

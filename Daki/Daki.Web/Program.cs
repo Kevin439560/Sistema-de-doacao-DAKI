@@ -1,10 +1,28 @@
-using Daki.Infra.Data; // Adicione este using
-using Microsoft.EntityFrameworkCore; // Adicione este using
+using Daki.Dominio.Interfaces;
+using Daki.Infra.Data;
+using Daki.Infra.Repositorios;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configurar o DbContext para usar PostgreSQL
 builder.Services.AddDbContext<DakiContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Registrar os repositórios
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IAnuncioRepository, AnuncioRepository>();
+builder.Services.AddScoped<IInteresseRepository, InteresseRepository>();
+
+// Configuração do Cookie de Autenticação
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Conta/Login"; // Se alguém tentar acessar página deslogado, vai pra cá
+        options.ExpireTimeSpan = TimeSpan.FromHours(8); // O usuário é deslogado após 8 horas
+    });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,6 +39,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

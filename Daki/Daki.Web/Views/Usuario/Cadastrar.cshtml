@@ -1,0 +1,71 @@
+﻿@model Daki.Web.Models.UsuarioCadastroViewModel
+
+@{
+    ViewData["Title"] = "Criar Conta - Daki";
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        // 2. Aplica a máscara no padrão brasileiro assim que a página carregar
+        $(document).ready(function () {
+        $('#Fone').mask('(00) 00000-0000');
+        });
+    </script>
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4 fw-bold" style="color: #FF7F50;">Junte-se à Daki</h2>
+                    <p class="text-center text-muted mb-4">Crie sua conta para começar a doar e receber itens.</p>
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger fw-bold mb-3 text-center"></div>
+
+                    <form asp-controller="Usuario" asp-action="Cadastrar" method="post">
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Nome" class="form-control" placeholder="Seu nome" />
+                            <label asp-for="Nome">Nome e Sobrenome</label>
+                            <span asp-validation-for="Nome" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" type="email" class="form-control" placeholder="nome@exemplo.com" />
+                            <label asp-for="Email">E-mail</label>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Fone" class="form-control" placeholder="(00) 00000-0000" />
+                            <label asp-for="Fone">Telefone / WhatsApp</label>
+                            <span asp-validation-for="Fone" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Senha" type="password" class="form-control" placeholder="Senha" />
+                            <label asp-for="Senha">Senha</label>
+                            <span asp-validation-for="Senha" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-lg text-white" style="background-color: #FF7F50;">Criar Conta</button>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="card-footer text-center py-3 border-0 bg-light">
+                    <div class="small">
+                        <a href="/Conta/Login" class="text-decoration-none">Já tem uma conta? Faça login!</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
