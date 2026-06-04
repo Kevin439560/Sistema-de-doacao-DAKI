@@ -1,4 +1,10 @@
+using Daki.Infra.Data; // Adicione este using
+using Microsoft.EntityFrameworkCore; // Adicione este using
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<DakiContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -19,6 +19,7 @@ namespace Daki.Infra.Data
         public DbSet<Anuncio> Anuncios { get; set; }
         public DbSet<ImagemAnuncio> ImagensAnuncio { get; set; }
         public DbSet<Interesse> Interesses { get; set; }
+        public DbSet<VisualizacaoAnuncio> VisualizacoesAnuncio { get; set; }
 
 
         // É aqui que configuramos os relacionamentos (chaves estrangeiras) e nomes das tabelas

@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Itens de Solução/">
+    <File Path="docker-compose.yml" />
+  </Folder>
   <Project Path="Daki.Dominio/Daki.Dominio.csproj" />
   <Project Path="Daki.Infra/Daki.Infra.csproj" />
   <Project Path="Daki.Web/Daki.Web.csproj" />

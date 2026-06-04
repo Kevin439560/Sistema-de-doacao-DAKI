@@ -1,0 +1,21 @@
+﻿version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: daki_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: daki_senha_local
+      POSTGRES_DB: daki_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - daki_pg_data:/var/lib/postgresql/data
+      
+  # Futuramente, colocaremos o container da aplicação Web aqui, 
+  # incluindo o volume para a pasta de upload de imagens das doações.
+
+volumes:
+  daki_pg_data:

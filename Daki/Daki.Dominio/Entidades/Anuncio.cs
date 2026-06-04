@@ -20,6 +20,7 @@ namespace Daki.Dominio.Entidades
         public Endereco Endereco { get; private set; }
         public ICollection<ImagemAnuncio> Imagens { get; private set; } = new List<ImagemAnuncio>();
         public ICollection<Interesse> Interesses { get; private set; } = new List<Interesse>();
+        public ICollection<VisualizacaoAnuncio> Visualizacoes { get; private set; } = new List<VisualizacaoAnuncio>();
 
         // Construtor vazio exigido pelo Entity Framework
         protected Anuncio() { }
