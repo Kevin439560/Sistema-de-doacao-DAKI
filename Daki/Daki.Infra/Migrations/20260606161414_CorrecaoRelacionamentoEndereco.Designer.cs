@@ -3,6 +3,7 @@ using System;
 using Daki.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Daki.Infra.Migrations
 {
     [DbContext(typeof(DakiContext))]
-    partial class DakiContextModelSnapshot : ModelSnapshot
+    [Migration("20260606161414_CorrecaoRelacionamentoEndereco")]
+    partial class CorrecaoRelacionamentoEndereco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +35,6 @@ namespace Daki.Infra.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -143,9 +143,6 @@ namespace Daki.Infra.Migrations
 
                     b.Property<Guid>("AnuncioId")
                         .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DataInteresse")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Justificativa")
                         .IsRequired()

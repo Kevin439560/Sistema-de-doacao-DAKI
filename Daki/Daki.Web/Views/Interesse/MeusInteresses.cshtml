@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Daki.Dominio.Entidades.Interesse>
+
+@{
+    ViewData["Title"] = "Meus Pedidos de Doação";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" style="color: #FF7F50;">
+            <i class="bi bi-list-stars me-2"></i> Meus Pedidos
+        </h2>
+        <a href="/" class="btn btn-outline-secondary">
+            Buscar mais itens
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="card-body text-center py-5">
+                <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                <h5 class="mt-3 text-secondary">Você ainda não solicitou nenhuma doação.</h5>
+                <p class="text-muted">Explore a vitrine e demonstre interesse nos itens que você precisa.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-secondary">
+                        <tr>
+                            <th scope="col" class="ps-4">Item Solicitado</th>
+                            <th scope="col">Data do Pedido</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-end pe-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var interesse in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 py-3">
+                                    <div class="d-flex align-items-center">
+                                        @{
+                                            var imagemCapa = interesse.Anuncio?.Imagens?.FirstOrDefault(i => i.Principal)?.UrlImagem
+                                                             ?? "https://placehold.co/100x100/f8f9fa/ff7f50?text=Sem+Foto";
+                                        }
+                                        <img src="@imagemCapa" alt="Capa" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                                        <div class="ms-3">
+                                            <h6 class="mb-0 fw-bold text-dark">@interesse.Anuncio?.Titulo</h6>
+                                            <small class="text-muted text-truncate d-inline-block" style="max-width: 250px;">
+                                                " @interesse.Justificativa "
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="text-muted">
+                                        <i class="bi bi-calendar3 me-1"></i> @interesse.DataInteresse.ToString("dd/MM/yyyy")
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @if (interesse.Status == Daki.Dominio.Enums.StatusInteresse.Aceita)
+                                    {
+                                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2">
+                                            <i class="bi bi-star-fill me-1"></i> Fui Escolhido!
+                                        </span>
+                                    }
+                                    else if (interesse.Status == Daki.Dominio.Enums.StatusInteresse.Recusada)
+                                    {
+                                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3 py-2">
+                                            Recusado
+                                        </span>
+                                    }
+                                    else if (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Fechado)
+                                    {
+                                        <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-3 py-2">
+                                            Anúncio Pausado
+                                        </span>
+                                    }
+                                    else if (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Concluido)
+                                    {
+                                        <span class="badge bg-light text-muted border px-3 py-2">
+                                            Item Doado
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-3 py-2">
+                                            Em Análise
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="text-end pe-4">
+                                    @if (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Ativo || (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Reservado && interesse.Status == Daki.Dominio.Enums.StatusInteresse.Aceita))
+                                    {
+                                        <a href="/Anuncio/Detalhes/@interesse.AnuncioId" class="btn btn-sm btn-outline-secondary">
+                                            Ver Anúncio
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex flex-column align-items-end">
+                                            <span class="badge bg-secondary mb-1">Anúncio Encerrado</span>
+                                            <button class="btn btn-sm btn-outline-secondary pe-none opacity-50" disabled>
+                                                Indisponível
+                                            </button>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

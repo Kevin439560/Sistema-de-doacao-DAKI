@@ -1,0 +1,86 @@
+﻿@model Daki.Web.Models.MeuPerfilViewModel
+
+@{
+    ViewData["Title"] = "Meu Perfil";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <h3 class="fw-bold text-secondary mb-4">
+                <i class="bi bi-person-circle me-2" style="color: #FF7F50;"></i> Meu Perfil
+            </h3>
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <form asp-action="MeuPerfil" asp-controller="Usuario" method="post">
+
+                        <!-- SEÇÃO 1: Dados Pessoais -->
+                        <h5 class="fw-bold mb-3 text-dark border-bottom pb-2">Dados Pessoais</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted">Nome Completo</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
+                                <input asp-for="Nome" class="form-control border-start-0 ps-0" placeholder="Seu nome" />
+                            </div>
+                            <span asp-validation-for="Nome" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-muted">WhatsApp / Telefone</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-whatsapp"></i></span>
+                                <input asp-for="Telefone" class="form-control border-start-0 ps-0" placeholder="(00) 00000-0000" />
+                            </div>
+                            <span asp-validation-for="Telefone" class="text-danger small"></span>
+                            <div class="form-text small">
+                                Mantenha este número atualizado, pois é por aqui que os interessados entrarão em contato.
+                            </div>
+                        </div>
+
+                        <!-- SEÇÃO 2: Segurança -->
+                        <h5 class="fw-bold mt-5 mb-3 text-dark border-bottom pb-2">Segurança</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted">Senha Atual</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-key"></i></span>
+                                <input asp-for="SenhaAtual" type="password" class="form-control border-start-0 ps-0" placeholder="Digite sua senha atual" />
+                            </div>
+                            <span asp-validation-for="SenhaAtual" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted">Nova Senha</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock"></i></span>
+                                <input asp-for="NovaSenha" type="password" class="form-control border-start-0 ps-0" placeholder="Deixe em branco para manter a atual" />
+                            </div>
+                            <span asp-validation-for="NovaSenha" class="text-danger small"></span>
+                            <div class="form-text small">
+                                Preencha a senha atual e a nova apenas se quiser alterar o seu acesso.
+                            </div>
+                        </div>
+
+                        <!-- Botões -->
+                        <div class="d-grid mt-5">
+                            <button type="submit" class="btn text-white btn-lg" style="background-color: #FF7F50;">
+                                <i class="bi bi-save me-1"></i> Salvar Alterações
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Scripts para validação no lado do cliente (navegador) antes de enviar para o servidor -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

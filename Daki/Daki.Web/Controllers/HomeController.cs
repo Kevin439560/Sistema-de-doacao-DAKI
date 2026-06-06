@@ -14,13 +14,14 @@ namespace Daki.Web.Controllers
             _anuncioRepository = anuncioRepository;
         }
 
-        public async Task<IActionResult> Index()
+        // GET: /Home/Index
+        public async Task<IActionResult> Index(Daki.Dominio.Enums.Categoria? categoria)
         {
-            // Busca todos os anúncios com status "Ativo" vindos do banco
-            var anunciosAtivos = await _anuncioRepository.ObterTodosAtivosAsync();
+            var anuncios = await _anuncioRepository.ObterVitrineAsync(categoria);
 
-            // Passa a lista de anúncios diretamente para a View
-            return View(anunciosAtivos);
+            ViewBag.CategoriaAtual = categoria;
+
+            return View(anuncios);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

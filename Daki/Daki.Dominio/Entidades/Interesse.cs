@@ -12,6 +12,7 @@ namespace Daki.Dominio.Entidades
         public Guid AnuncioId { get; private set; }
         public string Justificativa { get; private set; } = string.Empty;
         public StatusInteresse Status { get; private set; }
+        public DateTime DataInteresse { get; private set; }
 
         // Navegação
         public Anuncio? Anuncio { get; private set; }
@@ -27,17 +28,14 @@ namespace Daki.Dominio.Entidades
             AnuncioId = anuncioId;
             Justificativa = justificativa;
             Status = StatusInteresse.Pendente;// Todo interesse nasce pendente
+            DataInteresse = DateTime.UtcNow;
         }
 
         // Métodos de Regra de Negócio
-        public void Aceitar()
-        {
-            Status = StatusInteresse.Aceita;
-        }
-
-        public void Recusar()
-        {
-            Status = StatusInteresse.Recusada;
-        }
+        public void Aceitar() => Status = StatusInteresse.Aceita;
+   
+        public void Recusar() => Status = StatusInteresse.Recusada;
+   
+        public void Recuir() => Status = StatusInteresse.Pendente;
     }
 }

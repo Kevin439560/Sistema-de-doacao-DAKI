@@ -51,9 +51,9 @@ namespace Daki.Infra.Configuracoes
                 .OnDelete(DeleteBehavior.Cascade);// Se deletar o usuário, deleta os interesses relacionados
 
             // Relacionamento 1:1 com Endereco
-            builder.HasOne(u => u.Endereco)
+            builder.HasMany(u => u.Enderecos)
                 .WithOne(e => e.Usuario)
-                .HasForeignKey<Endereco>(e => e.UsuarioId)
+                .HasForeignKey(e => e.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);// Se deletar o usuário, deleta o endereço
         }
     }

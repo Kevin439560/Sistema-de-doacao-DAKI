@@ -24,5 +24,6 @@ namespace Daki.Dominio.Entidades
             UrlImagem = urlImagem;
             Principal = principal;
         }
+
     }
 }

@@ -14,6 +14,7 @@ namespace Daki.Dominio.Entidades
         public string Descricao { get; private set; } = string.Empty;
         public Categoria Categoria { get; private set; }
         public Status Status { get; private set; }
+        public DateTime DataCriacao { get; private set; }
 
         // Coleções (Navegação)
         public Usuario Usuario { get; private set; }
@@ -25,35 +26,38 @@ namespace Daki.Dominio.Entidades
         // Construtor vazio exigido pelo Entity Framework
         protected Anuncio() { }
 
-        public Anuncio(Guid usuarioId, Guid enderecoId, string titulo, string descricao, Categoria categoria)
+        public Anuncio(Guid usuarioId, Endereco endereco, string titulo, string descricao, Categoria categoria)
         {
             Id = Guid.NewGuid();
             UsuarioId = usuarioId;
-            EnderecoId = enderecoId;
+            EnderecoId = endereco.Id;
+            Endereco = endereco;
             Titulo = titulo;
             Descricao = descricao;
             Categoria = categoria;
             Status = Status.Ativo; // Todo anúncio nasce ativo
+            DataCriacao = DateTime.UtcNow;
         }
 
         // Métodos de Regra de Negócio
-        public void Reservar()
-        {
-            Status = Status.Reservado;
-        }
+        public void Reservar() => Status = Status.Reservado;
+        public void MarcarDoado() => Status = Status.Concluido;
+        public void Fechar() => Status = Status.Fechado;
+        public void Reativar() => Status = Status.Ativo;
 
-        public void MarcarDoado()
-        {
-            Status = Status.Concluido;
-        }
         public void AddImagem(string urlImagem, bool principal)
         {
             Imagens.Add(new ImagemAnuncio(Id, urlImagem, principal));
         }
 
-        public void Fechar()
+        public void AtualizarDados(string titulo, string descricao, Daki.Dominio.Enums.Categoria categoria)
         {
-            Status = Status.Fechado;
+            Titulo = titulo;
+            Descricao = descricao;
+            Categoria = categoria;
         }
+
+
     }
+
 }

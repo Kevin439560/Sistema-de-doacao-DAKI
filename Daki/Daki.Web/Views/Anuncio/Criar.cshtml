@@ -5,6 +5,17 @@
     ViewData["Title"] = "Publicar Doação - Daki";
 }
 
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+        // Aplica a máscara no campo de CEP
+        $('#CEP').mask('00000-000');
+        });
+    </script>
+}
+
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-8">

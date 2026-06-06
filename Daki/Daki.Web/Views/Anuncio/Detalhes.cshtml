@@ -1,0 +1,198 @@
+﻿@using System.Security.Claims
+@model Daki.Dominio.Entidades.Anuncio
+
+@{
+    ViewData["Title"] = $"{Model.Titulo} - Daki";
+
+    var usuarioLogadoId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var isDonoDoAnuncio = usuarioLogadoId == Model.UsuarioId.ToString();
+    var meuInteresse = Model.Interesses?.FirstOrDefault(i => i.UsuarioId.ToString() == usuarioLogadoId);
+}
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["MensagemSucesso"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="container mt-5 mb-5">
+    <div class="mb-4">
+        <a href="/" class="text-decoration-none text-muted">
+            <i class="bi bi-arrow-left"></i> Voltar para a vitrine
+        </a>
+    </div>
+
+    <div class="row g-5">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm overflow-hidden rounded-lg bg-light">
+
+                @if (Model.Imagens != null && Model.Imagens.Any())
+                {
+                    <div id="carouselAnuncio" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            @for (int i = 0; i < Model.Imagens.Count; i++)
+                            {
+                                <button type="button" data-bs-target="#carouselAnuncio" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "")"></button>
+                            }
+                        </div>
+
+                        <div class="carousel-inner">
+                            @{
+                                var imagensOrdenadas = Model.Imagens.OrderByDescending(i => i.Principal).ToList();
+                            }
+                            @for (int i = 0; i < imagensOrdenadas.Count; i++)
+                            {
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <img src="@imagensOrdenadas[i].UrlImagem" class="d-block w-100" alt="Foto do item" style="height: 480px; object-fit: cover;">
+                                </div>
+                            }
+                        </div>
+
+                        @if (Model.Imagens.Count > 1)
+                        {
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselAnuncio" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselAnuncio" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Próximo</span>
+                            </button>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <img src="https://placehold.co/600x400/f8f9fa/ff7f50?text=Sem+Foto" class="img-fluid" alt="Sem foto">
+                }
+
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="p-4 bg-white rounded-3 shadow-sm h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="badge rounded-pill mb-3 px-3 py-2 text-white" style="background-color: #FF7F50;">
+                        @Model.Categoria
+                    </span>
+                    <span class="badge bg-light text-secondary border mb-2"><i class="bi bi-eye-fill me-1"></i> @(Model.Visualizacoes?.Count ?? 0) visualizações</span>
+
+                    <h1 class="fw-bold text-dark mb-3">@Model.Titulo</h1>
+
+                    <p class="text-muted small mb-4">
+                        <i class="bi bi-person-circle me-1"></i> Publicado por: <span class="fw-bold text-secondary">@Model.Usuario?.Nome</span>
+                    </p>
+
+                    <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">Descrição do Item</h5>
+                    <p class="text-muted lh-base mb-4" style="white-space: pre-line;">
+                        @Model.Descricao
+                    </p>
+
+                    <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">Local de Retirada</h5>
+                    <div class="mb-3">
+                        <h6 class="fw-bold"><i class="bi bi-geo-alt-fill me-2" style="color: #FF7F50;"></i> Localização</h6>
+                        <p class="mb-1 text-muted">@Model.Endereco?.Bairro, @Model.Endereco?.Cidade - @Model.Endereco?.UF</p>
+
+                        @if (isDonoDoAnuncio || (meuInteresse != null && meuInteresse.Status == Daki.Dominio.Enums.StatusInteresse.Aceita))
+                        {
+                            <div class="alert alert-success p-3 mt-2 mb-0 border-0 shadow-sm">
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="bi bi-unlock-fill text-success me-2"></i>
+                                    <strong class="text-success">Endereço Liberado</strong>
+                                </div>
+                                <span class="text-dark">@Model.Endereco?.Rua, Nº @Model.Endereco?.Numero - CEP: @Model.Endereco?.CEP</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="mt-2 mb-0 text-danger fw-bold" style="font-size: 0.8rem;">
+                                <i class="bi bi-lock-fill me-1"></i> * O endereço completo (Rua e Número) será liberado após o doador aceitar o seu pedido.
+                            </p>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+
+                    @if (isDonoDoAnuncio)
+                    {
+                        <a href="/Anuncio/Gerenciar/@Model.Id" class="btn btn-lg btn-outline-secondary py-3 fw-bold shadow-sm">
+                            <i class="bi bi-gear-fill me-2"></i> Gerenciar Anúncio
+                        </a>
+                    }
+                    else if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        if (meuInteresse != null)
+                        {
+                            // O usuário já fez o pedido, vamos verificar o status:
+                            if (meuInteresse.Status == Daki.Dominio.Enums.StatusInteresse.Pendente)
+                            {
+                                <button type="button" class="btn btn-lg btn-secondary py-3 fw-bold shadow-sm pe-none" disabled>
+                                    <i class="bi bi-clock-history me-2"></i> Pedido em Análise
+                                </button>
+                            }
+                            else if (meuInteresse.Status == Daki.Dominio.Enums.StatusInteresse.Recusada)
+                            {
+                                <button type="button" class="btn btn-lg btn-danger py-3 fw-bold shadow-sm pe-none opacity-75" disabled>
+                                    <i class="bi bi-x-circle-fill me-2"></i> Pedido Recusado
+                                </button>
+                            }
+                            else if (meuInteresse.Status == Daki.Dominio.Enums.StatusInteresse.Aceita)
+                            {
+                                <button type="button" class="btn btn-lg btn-success py-3 fw-bold shadow-sm pe-none" disabled>
+                                    <i class="bi bi-star-fill me-2"></i> Você foi escolhido!
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-lg text-white py-3 fw-bold shadow-sm" style="background-color: #FF7F50;" data-bs-toggle="modal" data-bs-target="#modalInteresse">
+                                <i class="bi bi-heart-fill me-2"></i> Tenho Interesse em Receber
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        <a href="/Conta/Login" class="btn btn-lg text-white py-3 fw-bold shadow-sm" style="background-color: #FF7F50;">
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Faça login para solicitar
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalInteresse" tabindex="-1" aria-labelledby="modalInteresseLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold" id="modalInteresseLabel" style="color: #FF7F50;">Solicitar Doação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form asp-controller="Interesse" asp-action="Solicitar" method="post">
+                <div class="modal-body pt-2">
+                    <input type="hidden" name="AnuncioId" value="@Model.Id" />
+
+                    <p class="text-muted small mb-3">
+                        Escreva uma justificativa sincera para o doador explicando por que você precisa de <strong>@Model.Titulo</strong>.
+                    </p>
+
+                    <div class="form-floating mb-2">
+                        <textarea name="Mensagem" class="form-control" placeholder="Sua justificativa" style="height: 120px" required minlength="10"></textarea>
+                        <label for="Mensagem">Sua Mensagem</label>
+                    </div>
+                    <div class="form-text text-muted mb-3"><i class="bi bi-lock-fill"></i> Seus dados de contato reais (telefone) só serão exibidos ao doador se ele aceitar o seu pedido.</div>
+                </div>
+
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn text-white px-4" style="background-color: #FF7F50;">Enviar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

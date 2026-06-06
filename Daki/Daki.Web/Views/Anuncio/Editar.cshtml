@@ -1,0 +1,63 @@
+﻿@using Daki.Dominio.Enums
+@model Daki.Dominio.Entidades.Anuncio
+
+@{
+    ViewData["Title"] = "Editar Doação";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="d-flex align-items-center mb-4">
+                <a href="/Anuncio/Gerenciar/@Model.Id" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </a>
+                <h2 class="fw-bold text-dark mb-0">Editar Informações</h2>
+            </div>
+
+            <div class="card shadow-sm border-0 rounded-lg p-4">
+                <form action="/Anuncio/Editar" method="post">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+
+                    <div class="mb-3">
+                        <label for="Titulo" class="form-label fw-semibold">Título do Anúncio</label>
+                        <input type="text" class="form-control form-control-lg" id="Titulo" name="Titulo" value="@Model.Titulo" required maxlength="100">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Categoria" class="form-label fw-semibold">Categoria</label>
+                        <select class="form-select form-select-lg" id="Categoria" name="Categoria" required>
+                            @foreach (var categoria in Enum.GetValues(typeof(Categoria)))
+                            {
+                                // Lógica rápida para deixar selecionada a categoria atual do banco
+                                if (Model.Categoria.Equals(categoria))
+                                {
+                                    <option value="@categoria" selected>@categoria</option>
+                                }
+                                else
+                                {
+                                    <option value="@categoria">@categoria</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="Descricao" class="form-label fw-semibold">Descrição</label>
+                        <textarea class="form-control" id="Descricao" name="Descricao" rows="5" required>@Model.Descricao</textarea>
+                        <div class="form-text">Adicione mais detalhes sobre o estado do item para atrair os interessados corretos.</div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-lg text-white shadow-sm" style="background-color: #FF7F50;">
+                            <i class="bi bi-save2 me-2"></i> Salvar Alterações
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>

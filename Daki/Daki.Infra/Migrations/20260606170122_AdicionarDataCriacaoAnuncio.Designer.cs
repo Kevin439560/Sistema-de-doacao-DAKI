@@ -3,6 +3,7 @@ using System;
 using Daki.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Daki.Infra.Migrations
 {
     [DbContext(typeof(DakiContext))]
-    partial class DakiContextModelSnapshot : ModelSnapshot
+    [Migration("20260606170122_AdicionarDataCriacaoAnuncio")]
+    partial class AdicionarDataCriacaoAnuncio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,9 +146,6 @@ namespace Daki.Infra.Migrations
 
                     b.Property<Guid>("AnuncioId")
                         .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DataInteresse")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Justificativa")
                         .IsRequired()

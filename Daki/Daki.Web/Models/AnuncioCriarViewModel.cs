@@ -19,6 +19,7 @@ namespace Daki.Web.Models
 
         // --- Dados do Endereço de Retirada ---
         [Required(ErrorMessage = "O CEP é obrigatório.")]
+        [RegularExpression(@"^\d{5}-\d{3}$", ErrorMessage = "Digite um CEP válido no formato 00000-000.")]
         public string CEP { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "A rua é obrigatória.")]

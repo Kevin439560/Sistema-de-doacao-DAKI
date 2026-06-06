@@ -36,7 +36,9 @@ namespace Daki.Infra.Repositorios
         {
             return await _context.Interesses
                 .Include(i => i.Anuncio) // Para o usuário ver quais anúncios ele demonstrou interesse
+                    .ThenInclude(a => a.Imagens)
                 .Where(i => i.UsuarioId == usuarioId)
+                //.OrderByDescending(i => i.DataInteresse)
                 .ToListAsync();
         }
 

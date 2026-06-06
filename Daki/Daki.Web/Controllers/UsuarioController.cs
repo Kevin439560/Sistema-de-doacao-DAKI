@@ -1,7 +1,10 @@
 ﻿using Daki.Dominio.Entidades;
 using Daki.Dominio.Interfaces;
 using Daki.Web.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Daki.Web.Controllers
 {
@@ -59,6 +62,81 @@ namespace Daki.Web.Controllers
                 ModelState.AddModelError(string.Empty, "Ocorreu um erro interno ao processar o seu cadastro. Tente novamente.");
                 return View(model);
             }
+        }
+
+        // GET: /Usuario/MeuPerfil
+        [HttpGet]
+        public async Task<IActionResult> MeuPerfil()
+        {
+            // Pega o ID do usuário que está logado
+            var usuarioIdLogado = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            // Busca os dados dele no banco
+            var usuario = await _usuarioRepository.ObterPorIdAsync(usuarioIdLogado);
+
+            if (usuario == null) return NotFound();
+
+            // 👇 A MÁGICA AQUI: Mapeamos os dados do banco para o ViewModel da tela
+            var viewModel = new MeuPerfilViewModel
+            {
+                Nome = usuario.Nome,
+                Telefone = usuario.Fone // (Nota: Se a sua propriedade na Entidade se chamar Fone, ajuste aqui)
+            };
+
+            // Manda o ViewModel para a tela preencher o formulário
+            return View(viewModel);
+        }
+
+        // POST: /Usuario/MeuPerfil
+        [HttpPost]
+        public async Task<IActionResult> MeuPerfil(MeuPerfilViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Se o formulário for inválido, devolve a tela com os erros
+            }
+
+            var usuarioIdLogado = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var usuario = await _usuarioRepository.ObterPorIdAsync(usuarioIdLogado);
+
+            if (usuario == null) return NotFound();
+
+            // 1. Atualiza os dados de contato usando o método do domínio
+            usuario.AtualizarDados(model.Nome, model.Telefone);
+
+            // 2. Se ele digitou algo no campo de senha, nós atualizamos
+            if (!string.IsNullOrWhiteSpace(model.NovaSenha))
+            {
+                if (!BCrypt.Net.BCrypt.Verify(model.SenhaAtual, usuario.PasswordHash))
+                {
+                    // 👇 CORREÇÃO AQUI 1: Coloquei a chave do erro como "SenhaAtual"
+                    ModelState.AddModelError("SenhaAtual", "A senha atual está incorreta.");
+
+                    // 👇 CORREÇÃO AQUI 2: Retornamos o 'model' e não o 'usuario'
+                    return View(model);
+                }
+                usuario.AlterarSenha(BCrypt.Net.BCrypt.HashPassword(model.NovaSenha));
+            }
+
+            // 3. Salva tudo no banco de dados
+            await _usuarioRepository.AtualizarAsync(usuario);
+
+            //  4. Atualiza o Cookie (Crachá) com o novo nome
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+                new(ClaimTypes.Name, usuario.Nome), // Aqui entra o nome atualizado!
+                new(ClaimTypes.Email, usuario.Email)
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            // Re-efetua o login "por baixo dos panos" para trocar o cookie antigo pelo novo
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            TempData["MensagemSucesso"] = "Os seus dados foram atualizados com sucesso!";
+            return RedirectToAction("MeuPerfil");
         }
     }
 }

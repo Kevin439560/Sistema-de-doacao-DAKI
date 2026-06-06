@@ -20,7 +20,7 @@ namespace Daki.Infra.Repositorios
         public async Task<Usuario?> ObterPorIdAsync(Guid id)
         {
             return await _context.Usuarios
-                .Include(u => u.Endereco)
+                .Include(u => u.Enderecos)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 

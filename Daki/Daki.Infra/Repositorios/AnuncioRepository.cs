@@ -24,17 +24,26 @@ namespace Daki.Infra.Repositorios
                 .Include(a => a.Imagens)
                 .Include(a => a.Endereco)
                 .Include(a => a.Usuario)
+                .Include(a => a.Interesses)
+                    .ThenInclude(i => i.Usuario)
+                .Include(a => a.Visualizacoes)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task<IEnumerable<Anuncio>> ObterTodosAtivosAsync()
+        public async Task<IEnumerable<Anuncio>> ObterVitrineAsync(Categoria? categoria = null)
         {
-            return await _context.Anuncios
+            var query = _context.Anuncios
                 .Include(a => a.Imagens)
                 .Include(a => a.Endereco)
                 .Where(a => a.Status == Status.Ativo)
-                .OrderByDescending(a => a.Id) // Mais recentes primeiro
-                .ToListAsync();
+                .AsQueryable();
+
+            if (categoria.HasValue)
+            {
+                query = query.Where(a => a.Categoria == categoria.Value);
+            }
+
+            return await query.OrderByDescending(a => a.DataCriacao).ToListAsync();
         }
 
         public async Task<IEnumerable<Anuncio>> ObterPorCategoriaAsync(Categoria categoria)
@@ -50,6 +59,8 @@ namespace Daki.Infra.Repositorios
         {
             return await _context.Anuncios
                 .Include(a => a.Imagens)
+                .Include(a => a.Interesses)
+                .Include(a => a.Visualizacoes)
                 .Where(a => a.UsuarioId == usuarioId)
                 .ToListAsync();
         }
@@ -65,5 +76,13 @@ namespace Daki.Infra.Repositorios
             _context.Anuncios.Update(anuncio);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AdicionarVisualizacaoAsync(VisualizacaoAnuncio visualizacao)
+        {
+            // Diz explicitamente ao EF Core que isso é um registro NOVO
+            _context.Set<VisualizacaoAnuncio>().Add(visualizacao);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
