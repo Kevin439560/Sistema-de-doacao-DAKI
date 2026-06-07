@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # 1. O nosso banco de dados
   db:
     image: postgres:16-alpine
     container_name: daki_postgres
@@ -13,9 +14,26 @@ services:
       - "5432:5432"
     volumes:
       - daki_pg_data:/var/lib/postgresql/data
-      
-  # Futuramente, colocaremos o container da aplicação Web aqui, 
-  # incluindo o volume para a pasta de upload de imagens das doações.
+
+  # 2. A aplicação Web (com o nome que o VS gerou: daki.web)
+  daki.web:
+    image: ${DOCKER_REGISTRY-}dakiweb
+    build:
+      context: .
+      dockerfile: Daki.Web/Dockerfile
+    container_name: daki_web
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8080:80" # Se estiver no .NET 8, pode precisar alterar para "8080:8080"
+    environment:
+      # Conectando com o banco usando o Host=db
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=daki_db;Username=postgres;Password=kevinfreitas
+    volumes:
+      # Salvando as imagens dos anúncios
+      - daki_uploads:/app/wwwroot/uploads
 
 volumes:
   daki_pg_data:
+  daki_uploads:
