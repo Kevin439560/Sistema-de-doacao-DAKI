@@ -21,7 +21,7 @@ O projeto foi construído utilizando práticas modernas de desenvolvimento web n
 - **Linguagem:** C#
 - **Framework Principal:** ASP.NET Core MVC (.NET 10+)
 - **Persistência de Dados:** Entity Framework Core
-- **Banco de Dados:** PostgreSQL (Configurável via Connection String)
+- **Banco de Dados:** PostgreSQL (via Npgsql.EntityFrameworkCore.PostgreSQL)
 - **Segurança:** BCrypt.Net (Hashing de senhas)
 - **Interface e Estilização:** Bootstrap 5 & Bootstrap Icons
 - **Validações:** jQuery Validation (Client-side) & ModelState (Server-side)
@@ -53,6 +53,7 @@ A estrutura de classes de domínio e seus respectivos relacionamentos (Usuário,
 ### Pré-requisitos
 * .NET SDK (Versão 6.0 ou superior)
 * IDE de sua preferência (Visual Studio, VS Code ou Rider)
+* **PostgreSQL** instalado e rodando localmente (diretamente na máquina ou via Docker).
 
 ### Passos para Execução
 1. Clone o repositório em sua máquina:
@@ -62,9 +63,25 @@ A estrutura de classes de domínio e seus respectivos relacionamentos (Usuário,
 2. Navegue até a pasta do projeto web:
    ```bash
     cd Sistema-de-doacao-DAKI/Daki.Web
-3. Execute o comando para restaurar as dependências e rodar a aplicação:
+   
+3. Configure o Banco de Dados (PostgreSQL):
+Abra o arquivo appsettings.json (dentro do projeto Daki.Web) e atualize a DefaultConnection com as suas credenciais locais do PostgreSQL. O formato padrão costuma ser:
+"Host=localhost;Port=5432;Database=DakiDB;Username=seu_usuario;Password=sua_senha"
+
+4. Instale as ferramentas do Entity Framework (caso não tenha):
+No terminal, execute o comando abaixo para garantir que o CLI do EF está disponível globalmente:
+   ```bash
+   dotnet tool install --global dotnet-ef
+
+5. Crie o Banco de Dados e as Tabelas (Migrations):
+Ainda no terminal, dentro da pasta do projeto web, execute o comando abaixo. Ele lerá os arquivos de migração e construirá toda a estrutura relacional no seu PostgreSQL automaticamente:
+   ```bash
+   dotnet ef database update
+   
+6. Execute o comando para rodar a aplicação:
     ```bash
     dotnet run
-4. Abra o navegador e acesse o endereço local indicado no terminal (como https://localhost:7047)
+    
+7. Abra o navegador e acesse o endereço local indicado no terminal (como https://localhost:7047)
 
 Este projeto foi desenvolvido como critério de avaliação prática para o curso de graduação em Análise e Desenvolvimento de Sistemas. O foco principal foi aplicar conceitos de Engenharia de Software, Modelagem Relacional, Segurança da Informação e Arquitetura de Sistemas em um cenário do mundo real focado no terceiro setor.
