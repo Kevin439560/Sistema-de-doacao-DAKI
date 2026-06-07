@@ -90,14 +90,14 @@ Ainda no terminal, dentro da pasta do projeto web, execute o comando abaixo. Ele
 A aplicação e o banco de dados estão totalmente conteinerizados. Isso significa que você não precisa instalar o SDK do .NET ou configurar um servidor PostgreSQL na sua máquina local para avaliar o projeto.
 
 ### Pré-requisitos
-* Os itens anteriores
+* Os itens anteriores(Recomendação)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop) instalado e rodando em segundo plano.
 
 ### Passos para Execução
 
 1. **Clone o repositório em sua máquina:**
    ```bash
-   git clone [https://github.com/Kevin439560/Sistema-de-doacao-DAKI.git](https://github.com/Kevin439560/Sistema-de-doacao-DAKI.git)
+   git clone https://github.com/Kevin439560/Sistema-de-doacao-DAKI.git
 
 2. Navegue até a pasta raiz do projeto (onde está o arquivo docker-compose.yml):
    ```bash
