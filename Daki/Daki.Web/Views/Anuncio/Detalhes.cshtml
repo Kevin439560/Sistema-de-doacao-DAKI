@@ -9,14 +9,6 @@
     var meuInteresse = Model.Interesses?.FirstOrDefault(i => i.UsuarioId.ToString() == usuarioLogadoId);
 }
 
-@if (TempData["MensagemSucesso"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i> @TempData["MensagemSucesso"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
 <div class="container mt-5 mb-5">
     <div class="mb-4">
         <a href="/" class="text-decoration-none text-muted">

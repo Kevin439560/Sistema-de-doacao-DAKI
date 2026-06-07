@@ -16,8 +16,9 @@ namespace Daki.Web.Models
         [MinLength(6, ErrorMessage = "A senha deve ter pelo menos 6 caracteres.")]
         public string Senha { get; set; } = string.Empty;
 
-        // O telefone não é obrigatório, mas se for preenchido, validamos o formato
-        [Phone(ErrorMessage = "Digite um telefone válido.")]
+        // O campo continua opcional (string?), mas se for preenchido, valida estritamente
+        [RegularExpression(@"^\(?([1-9]{2})\)?[-. ]?([2-9])?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$",
+            ErrorMessage = "Digite um telefone válido com DDD (ex: 11999998888 ou 1133334444).")]
         public string? Fone { get; set; }
     }
 }

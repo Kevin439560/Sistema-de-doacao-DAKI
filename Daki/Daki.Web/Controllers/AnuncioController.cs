@@ -43,7 +43,7 @@ namespace Daki.Web.Controllers
                 Guid? visitanteId = string.IsNullOrEmpty(usuarioLogadoId) ? null : Guid.Parse(usuarioLogadoId);
                 var ipVisitante = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "IP Desconhecido";
 
-                // 👇 NOVA REGRA: Verifica se a pessoa já viu o anúncio antes
+                //  Verifica se a pessoa já viu o anúncio antes
                 bool jaVisualizou;
 
                 if (visitanteId.HasValue)

@@ -115,11 +115,13 @@
 
                                         @if (Model.Status == Daki.Dominio.Enums.Status.Ativo && interesse.Status == Daki.Dominio.Enums.StatusInteresse.Pendente)
                                         {
-                                            <a href="/Interesse/Recusar/@interesse.Id" class="btn btn-sm btn-outline-danger px-3">
+                                            <a href="/Interesse/Recusar/@interesse.Id" class="btn btn-sm btn-outline-danger px-3"
+                                               onclick="return confirm('Tem certeza que deseja RECUSAR este pedido? Esta ação não pode ser desfeita e a pessoa será avisada.');">
                                                 <i class="bi bi-x-lg me-1"></i> Recusar
                                             </a>
-                                            <a href="/Interesse/Aceitar/@interesse.Id" class="btn btn-sm text-white px-3" style="background-color: #FF7F50;">
-                                                <i class="bi bi-check-lg me-1"></i> Escolher Beneficiário
+                                            <a href="/Interesse/Aceitar/@interesse.Id" class="btn btn-sm text-white px-3" style="background-color: #FF7F50;" 
+                                                onclick="return confirm('Tem certeza que deseja ESCOLHER esta pessoa? O item ficará reservado para ela e os outros pedidos ficarão aguardando.');">
+                                                <i class="bi bi-check-lg me-1"></i>Aceitar
                                             </a>
                                         }
                                         else if (interesse.Status == Daki.Dominio.Enums.StatusInteresse.Aceita)
@@ -141,10 +143,12 @@
                                                     </a>
 
                                                     <div class="d-flex gap-2 mt-1">
-                                                        <a href="/Anuncio/CancelarReserva/@Model.Id" class="btn btn-sm btn-outline-danger w-50">
+                                                        <a href="/Anuncio/CancelarReserva/@Model.Id" class="btn btn-sm btn-outline-danger w-50"
+                                                           onclick="return confirm('Tem certeza que deseja CANCELAR esta reserva? O anúncio voltará a ficar Ativo na vitrine para os outros interessados.');">
                                                             <i class="bi bi-arrow-counterclockwise me-1"></i> Desfazer Reserva
                                                         </a>
-                                                        <a href="/Anuncio/ConcluirDoacao/@Model.Id" class="btn btn-sm btn-success w-50">
+                                                        <a href="/Anuncio/ConcluirDoacao/@Model.Id" class="btn btn-sm btn-success w-50"
+                                                           onclick="return confirm('Tem certeza que deseja CONFIRMAR o pedido reserva? O anúncio será concluído nesta etapa.');">
                                                             <i class="bi bi-box-seam-fill me-1"></i> Doação Realizada!
                                                         </a>
                                                     </div>

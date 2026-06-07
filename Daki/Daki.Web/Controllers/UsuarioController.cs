@@ -76,11 +76,12 @@ namespace Daki.Web.Controllers
 
             if (usuario == null) return NotFound();
 
-            // 👇 A MÁGICA AQUI: Mapeamos os dados do banco para o ViewModel da tela
+            //  Mapear os dados do banco para o ViewModel da tela
             var viewModel = new MeuPerfilViewModel
             {
                 Nome = usuario.Nome,
-                Telefone = usuario.Fone // (Nota: Se a sua propriedade na Entidade se chamar Fone, ajuste aqui)
+                Telefone = usuario.Fone, // (Nota: Se a sua propriedade na Entidade se chamar Fone, ajuste aqui)
+                Email = usuario.Email
             };
 
             // Manda o ViewModel para a tela preencher o formulário
@@ -109,10 +110,9 @@ namespace Daki.Web.Controllers
             {
                 if (!BCrypt.Net.BCrypt.Verify(model.SenhaAtual, usuario.PasswordHash))
                 {
-                    // 👇 CORREÇÃO AQUI 1: Coloquei a chave do erro como "SenhaAtual"
+      
                     ModelState.AddModelError("SenhaAtual", "A senha atual está incorreta.");
 
-                    // 👇 CORREÇÃO AQUI 2: Retornamos o 'model' e não o 'usuario'
                     return View(model);
                 }
                 usuario.AlterarSenha(BCrypt.Net.BCrypt.HashPassword(model.NovaSenha));

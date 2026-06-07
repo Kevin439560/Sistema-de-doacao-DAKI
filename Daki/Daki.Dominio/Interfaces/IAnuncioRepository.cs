@@ -9,7 +9,7 @@ namespace Daki.Dominio.Interfaces
     public interface IAnuncioRepository
     {
         Task<Anuncio?> ObterPorIdAsync(Guid id);
-        Task<IEnumerable<Anuncio>> ObterVitrineAsync(Daki.Dominio.Enums.Categoria? categoria = null);
+        Task<IEnumerable<Anuncio>> ObterVitrineAsync(Categoria? categoria = null);
         Task<IEnumerable<Anuncio>> ObterPorCategoriaAsync(Categoria categoria);
         Task<IEnumerable<Anuncio>> ObterPorUsuarioAsync(Guid usuarioId);
         Task AdicionarAsync(Anuncio anuncio);

@@ -13,7 +13,7 @@ namespace Daki.Infra.Data
         public DakiContext(DbContextOptions<DakiContext> options) : base(options)
         {
         }
-        // Estas propriedades representam as tabelas no banco
+        //  as tabelas no banco
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
         public DbSet<Anuncio> Anuncios { get; set; }
@@ -22,13 +22,10 @@ namespace Daki.Infra.Data
         public DbSet<VisualizacaoAnuncio> VisualizacoesAnuncio { get; set; }
 
 
-        // É aqui que configuramos os relacionamentos (chaves estrangeiras) e nomes das tabelas
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Podemos aplicar as configurações de mapeamento aqui (Fluent API)
-            // Para deixar o código limpo, vamos aplicar as configurações do assembly
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DakiContext).Assembly);
         }
     }

@@ -29,7 +29,7 @@ namespace Daki.Infra.Configuracoes
                 .HasForeignKey(v => v.AnuncioId)
                 .OnDelete(DeleteBehavior.Cascade); // Se apagar o anúncio, limpa o histórico de views dele
 
-            // Visualizacao N : 1 Usuario (Opcional)
+            // Visualizacao N : 1 Usuario 
             builder.HasOne(v => v.Usuario)
                 .WithMany() // O usuário não precisa de uma lista das coisas que ele viu no domínio
                 .HasForeignKey(v => v.UsuarioId)

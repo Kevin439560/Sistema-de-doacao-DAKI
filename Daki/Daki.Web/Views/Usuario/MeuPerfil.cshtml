@@ -19,9 +19,18 @@
 
                         <!-- SEÇÃO 1: Dados Pessoais -->
                         <h5 class="fw-bold mb-3 text-dark border-bottom pb-2">Dados Pessoais</h5>
-
                         <div class="mb-3">
-                            <label class="form-label fw-semibold text-muted">Nome Completo</label>
+                            <label class="form-label fw-semibold text-muted">E-mail de Acesso</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope"></i></span>
+                                <input asp-for="Email" class="form-control bg-light text-muted border-start-0 ps-0" readonly />
+                            </div>
+                            <div class="form-text small">
+                                O e-mail é utilizado para o seu login e não pode ser alterado.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted">Nome e Sobrenome</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
                                 <input asp-for="Nome" class="form-control border-start-0 ps-0" placeholder="Seu nome" />
@@ -83,4 +92,13 @@
 <!-- Scripts para validação no lado do cliente (navegador) antes de enviar para o servidor -->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        // 2. Aplica a máscara no padrão brasileiro assim que a página carregar
+        $(document).ready(function () {
+        $('#Telefone').mask('(00) 00000-0000');
+        });
+    </script>
 }

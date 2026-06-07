@@ -79,7 +79,6 @@ namespace Daki.Infra.Repositorios
 
         public async Task AdicionarVisualizacaoAsync(VisualizacaoAnuncio visualizacao)
         {
-            // Diz explicitamente ao EF Core que isso é um registro NOVO
             _context.Set<VisualizacaoAnuncio>().Add(visualizacao);
             await _context.SaveChangesAsync();
         }

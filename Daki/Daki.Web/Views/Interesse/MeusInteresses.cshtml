@@ -86,6 +86,12 @@
                                             Item Doado
                                         </span>
                                     }
+                                    else if (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Reservado && interesse.Status == Daki.Dominio.Enums.StatusInteresse.Pendente)
+                                    {
+                                        <span class="badge bg-light text-muted border px-3 py-2">
+                                            <i class="bi bi-clock-history me-1"></i> Item Reservado para outra Pessoa
+                                        </span>
+                                    }                                    
                                     else
                                     {
                                         <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-3 py-2">
@@ -95,7 +101,13 @@
                                 </td>
 
                                 <td class="text-end pe-4">
-                                    @if (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Ativo || (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Reservado && interesse.Status == Daki.Dominio.Enums.StatusInteresse.Aceita))
+                                    @if (interesse.Status == Daki.Dominio.Enums.StatusInteresse.Recusada)
+                                    {
+                                        <button class="btn btn-sm btn-outline-secondary pe-none opacity-50" disabled>
+                                            Indisponível
+                                        </button>
+                                    }
+                                    else if (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Ativo || (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Reservado && interesse.Status == Daki.Dominio.Enums.StatusInteresse.Aceita) || (interesse.Anuncio?.Status == Daki.Dominio.Enums.Status.Concluido && interesse.Status == Daki.Dominio.Enums.StatusInteresse.Aceita))
                                     {
                                         <a href="/Anuncio/Detalhes/@interesse.AnuncioId" class="btn btn-sm btn-outline-secondary">
                                             Ver Anúncio
@@ -104,8 +116,7 @@
                                     else
                                     {
                                         <div class="d-flex flex-column align-items-end">
-                                            <span class="badge bg-secondary mb-1">Anúncio Encerrado</span>
-                                            <button class="btn btn-sm btn-outline-secondary pe-none opacity-50" disabled>
+                                             <button class="btn btn-sm btn-outline-secondary pe-none opacity-50" disabled>
                                                 Indisponível
                                             </button>
                                         </div>
