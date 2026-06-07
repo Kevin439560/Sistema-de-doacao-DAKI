@@ -54,6 +54,7 @@ A estrutura de classes de domínio e seus respectivos relacionamentos (Usuário,
 * .NET SDK (Versão 6.0 ou superior)
 * IDE de sua preferência (Visual Studio, VS Code ou Rider)
 * **PostgreSQL** instalado e rodando localmente (diretamente na máquina ou via Docker).
+* * Git instalado.
 
 ### Passos para Execução
 1. Clone o repositório em sua máquina:
@@ -83,5 +84,33 @@ Ainda no terminal, dentro da pasta do projeto web, execute o comando abaixo. Ele
     dotnet run
     
 7. Abra o navegador e acesse o endereço local indicado no terminal (como https://localhost:7047)
+
+### 🐳 Como Executar com Docker (Recomendado)
+
+A aplicação e o banco de dados estão totalmente conteinerizados. Isso significa que você não precisa instalar o SDK do .NET ou configurar um servidor PostgreSQL na sua máquina local para avaliar o projeto.
+
+### Pré-requisitos
+* Os itens anteriores
+* [Docker Desktop](https://www.docker.com/products/docker-desktop) instalado e rodando em segundo plano.
+
+### Passos para Execução
+
+1. **Clone o repositório em sua máquina:**
+   ```bash
+   git clone [https://github.com/Kevin439560/Sistema-de-doacao-DAKI.git](https://github.com/Kevin439560/Sistema-de-doacao-DAKI.git)
+
+2. Navegue até a pasta raiz do projeto (onde está o arquivo docker-compose.yml):
+   ```bash
+   cd Sistema-de-doacao-DAKI
+
+3. Suba a infraestrutura completa:
+Execute o comando abaixo no terminal. Ele vai baixar a imagem do PostgreSQL, construir o banco de dados e as tabelas relacionais(caso seja a primeira execução), compilar o código C# e conectar ambos numa rede virtual:
+   ```bash
+   docker-compose up --build
+
+4. Acesse no Navegador:
+Aguarde os logs estabilizarem no terminal e abra o endereço:
+   ```bash
+   👉 http://localhost:8080
 
 Este projeto foi desenvolvido como critério de avaliação prática para o curso de graduação em Análise e Desenvolvimento de Sistemas. O foco principal foi aplicar conceitos de Engenharia de Software, Modelagem Relacional, Segurança da Informação e Arquitetura de Sistemas em um cenário do mundo real focado no terceiro setor.
