@@ -53,8 +53,8 @@ A estrutura de classes de domínio e seus respectivos relacionamentos (Usuário,
 ### Pré-requisitos
 * .NET SDK (Versão 6.0 ou superior)
 * IDE de sua preferência (Visual Studio, VS Code ou Rider)
-* **PostgreSQL** instalado e rodando localmente (diretamente na máquina ou via Docker).
-* * Git instalado.
+* **PostgreSQL** instalado e rodando localmente 
+* Git instalado.
 
 ### Passos para Execução
 1. Clone o repositório em sua máquina:
