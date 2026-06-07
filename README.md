@@ -57,7 +57,7 @@ A estrutura de classes de domínio e seus respectivos relacionamentos (Usuário,
 ### Passos para Execução
 1. Clone o repositório em sua máquina:
    ```bash
-   git clone [https://github.com/Kevin439560/Sistema-de-doacao-DAKI.git](https://github.com/Kevin439560/Sistema-de-doacao-DAKI.git)
+   git clone https://github.com/Kevin439560/Sistema-de-doacao-DAKI.git
 
 2. Navegue até a pasta do projeto web:
    ```bash
@@ -67,4 +67,4 @@ A estrutura de classes de domínio e seus respectivos relacionamentos (Usuário,
     dotnet run
 4. Abra o navegador e acesse o endereço local indicado no terminal (como https://localhost:7047)
 
-Este projeto foi desenvolvido como critério de avaliação prática para o curso de graduação em Ciência da Computação. O foco principal foi aplicar conceitos de Engenharia de Software, Modelagem Relacional, Segurança da Informação e Arquitetura de Sistemas em um cenário do mundo real focado no terceiro setor.
+Este projeto foi desenvolvido como critério de avaliação prática para o curso de graduação em Análise e Desenvolvimento de Sistemas. O foco principal foi aplicar conceitos de Engenharia de Software, Modelagem Relacional, Segurança da Informação e Arquitetura de Sistemas em um cenário do mundo real focado no terceiro setor.
