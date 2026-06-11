@@ -9,6 +9,7 @@ namespace Daki.Dominio.Enums
         Ativo,
         Reservado,
         Concluido,
-        Fechado
+        Fechado,
+        Encerrado
     }
 }

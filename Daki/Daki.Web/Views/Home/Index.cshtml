@@ -18,6 +18,14 @@
                 <a href="/Conta/Login" class="btn btn-outline-secondary btn-lg px-4">Fazer Login</a>
             </div>
         }
+        else
+        {
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3">
+                <a href="/Anuncio/Criar" class="btn btn-lg text-white px-5 shadow-sm transition-card" style="background-color: #FF7F50;">
+                    <i class="bi bi-box2-heart me-2"></i> Fazer uma Doação
+                </a>
+            </div>
+        }
     </div>
 </div>
 
@@ -85,7 +93,16 @@
                                                   ?? "https://placehold.co/600x400/f8f9fa/ff7f50?text=Daki";
                         }
                         <img src="@imagemPrincipal" class="card-img-top" alt="@anuncio.Titulo" style="height: 220px; object-fit: cover;">
-
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="mt-2 text-center">
+                                <form asp-controller="Anuncio" asp-action="ExcluirAdmin" asp-route-id="@anuncio.Id" method="post">
+                                    <button type="submit" class="btn btn-sm btn-danger w-100" onclick="return confirm('Deseja realmente apagar este anúncio? Ninguém mais poderá pedir esta doação.');">
+                                        <i class="bi bi-trash"></i> Remover Anúncio (Admin)
+                                    </button>
+                                </form>
+                            </div>
+                        }
                         <div class="card-body p-4">
                             <span class="badge rounded-pill mb-2 px-3 py-2 text-white" style="background-color: #FF7F50;">
                                 @anuncio.Categoria

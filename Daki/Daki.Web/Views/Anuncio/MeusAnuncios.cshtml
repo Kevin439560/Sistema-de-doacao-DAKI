@@ -73,12 +73,21 @@
                                 </td>
 
                                 <td class="text-end pe-4">
-                                    <a href="/Anuncio/Detalhes/@anuncio.Id" class="btn btn-sm btn-outline-secondary me-2" title="Ver como os outros veem">
-                                        <i class="bi bi-eye-fill me-1"></i> Ver
-                                    </a>
-                                    <a href="/Anuncio/Gerenciar/@anuncio.Id" class="btn btn-sm text-white" style="background-color: #FF7F50;" title="Gerenciar Pedidos e Editar">
-                                        Gerenciar
-                                    </a>
+                                    @if (anuncio.Status == Daki.Dominio.Enums.Status.Encerrado)
+                                    {
+                                        <span class="badge bg-danger p-2" title="Este anúncio foi removido por violar as regras da plataforma.">
+                                            <i class="bi bi-exclamation-octagon-fill me-1"></i> Removido pela Moderação
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a href="/Anuncio/Detalhes/@anuncio.Id" class="btn btn-sm btn-outline-secondary me-2" title="Ver como os outros veem">
+                                            <i class="bi bi-eye-fill me-1"></i> Ver
+                                        </a>
+                                        <a href="/Anuncio/Gerenciar/@anuncio.Id" class="btn btn-sm text-white" style="background-color: #FF7F50;" title="Gerenciar Pedidos e Editar">
+                                            Gerenciar
+                                        </a>
+                                    }
                                 </td>
                             </tr>
                         }

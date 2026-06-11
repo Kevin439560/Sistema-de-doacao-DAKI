@@ -311,5 +311,20 @@ namespace Daki.Web.Controllers
             }
         }
 
+        // POST: /Anuncio/ExcluirAdmin/{id}
+        [HttpPost]
+        [Authorize(Roles = "Admin")] // Só quem tem o claim de Admin entra.
+        public async Task<IActionResult> ExcluirAdmin(Guid id)
+        {
+            var anuncio = await _anuncioRepository.ObterPorIdAsync(id);
+            if (anuncio == null) return NotFound();
+
+            anuncio.Encerrar();
+            await _anuncioRepository.AtualizarAsync(anuncio);
+
+            return RedirectToAction("Index", "Home");
+        }
     }
+
+
 }

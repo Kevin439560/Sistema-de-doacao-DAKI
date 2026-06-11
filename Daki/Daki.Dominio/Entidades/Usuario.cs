@@ -12,6 +12,7 @@ namespace Daki.Dominio.Entidades
         public string PasswordHash { get; private set; } = string.Empty;
         public string Fone { get; private set; } = string.Empty;
         public DateTime DataCriacao { get; private set; }
+        public bool IsAdmin { get; private set; } = false;
 
         // O 'set' agora é private, protegendo a coleção
         public ICollection<Endereco> Enderecos { get; private set; } = new List<Endereco>();

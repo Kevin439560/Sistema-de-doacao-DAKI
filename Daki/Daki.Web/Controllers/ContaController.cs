@@ -57,6 +57,12 @@ namespace Daki.Web.Controllers
                 new(ClaimTypes.Email, usuario.Email)
             };
 
+
+            if (usuario.IsAdmin)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+            }
+
             // Criar a identidade carimbada com essas informações
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
