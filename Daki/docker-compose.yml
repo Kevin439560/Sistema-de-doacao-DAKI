@@ -14,10 +14,12 @@ services:
       - "5432:5432"
     volumes:
       - daki_pg_data:/var/lib/postgresql/data
+      - daki_keys:/app/keys
 
   # 2. A aplicação Web (com o nome que o VS gerou: daki.web)
   daki.web:
     image: ${DOCKER_REGISTRY-}dakiweb
+    user: root
     build:
       context: .
       dockerfile: Daki.Web/Dockerfile
@@ -37,3 +39,4 @@ services:
 volumes:
   daki_pg_data:
   daki_uploads:
+  daki_keys:

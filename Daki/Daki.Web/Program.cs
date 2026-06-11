@@ -2,6 +2,7 @@ using Daki.Dominio.Interfaces;
 using Daki.Infra.Data;
 using Daki.Infra.Repositorios;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -26,6 +27,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"/app/keys"))
+    .SetApplicationName("DakiApp");
 
 var app = builder.Build();
 

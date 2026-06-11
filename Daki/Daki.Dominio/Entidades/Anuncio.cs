@@ -44,6 +44,7 @@ namespace Daki.Dominio.Entidades
         public void MarcarDoado() => Status = Status.Concluido;
         public void Fechar() => Status = Status.Fechado;
         public void Reativar() => Status = Status.Ativo;
+        public void Encerrar() => Status = Status.Encerrado;
 
         public void AddImagem(string urlImagem, bool principal)
         {
