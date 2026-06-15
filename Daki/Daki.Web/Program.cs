@@ -4,7 +4,7 @@ using Daki.Infra.Repositorios;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,37 +21,73 @@ builder.Services.AddScoped<IInteresseRepository, InteresseRepository>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Conta/Login"; // Se alguém tentar acessar página deslogado, vai pra cá
-        options.ExpireTimeSpan = TimeSpan.FromHours(8); // O usuário é deslogado após 8 horas
+        options.LoginPath = "/Conta/Login";
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
     });
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDataProtection()
-    .PersistKeysToFileSystem(new DirectoryInfo(@"/app/keys"))
-    .SetApplicationName("DakiApp");
+// 1. Configuração Blindada do Data Protection
+if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")))
+{
+    var pastaChaves = "/home/site/keys";
+    try
+    {
+        if (!Directory.Exists(pastaChaves)) Directory.CreateDirectory(pastaChaves);
+    }
+    catch { /* Ignora o bloqueio do SMB da Azure */ }
+
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(pastaChaves))
+        .SetApplicationName("DakiApp");
+}
+else
+{
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(@"/app/keys"))
+        .SetApplicationName("DakiApp");
+}
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// 2. Configuração Blindada das Imagens
+if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")))
+{
+    var pastaPersistenteUploads = Path.Combine("/home/site", "uploads");
+
+    try
+    {
+        if (!Directory.Exists(pastaPersistenteUploads))
+        {
+            Directory.CreateDirectory(pastaPersistenteUploads);
+        }
+    }
+    catch (Exception)
+    {
+        // A pasta é criada, mas o SMB recusa a mudança de permissões do .NET.
+        // Capturamos o erro para impedir que a aplicação quebre na inicialização.
+    }
+
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(pastaPersistenteUploads),
+        RequestPath = "/uploads"
+    });
+}
+
 app.UseRouting();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
@@ -60,9 +96,8 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<DakiContext>(); 
-
-    // Aplica as migrations pendentes automaticamente
+    var context = services.GetRequiredService<DakiContext>();
     context.Database.Migrate();
 }
+
 app.Run();

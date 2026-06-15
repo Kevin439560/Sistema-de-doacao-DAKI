@@ -158,7 +158,7 @@ namespace Daki.Web.Controllers
             anuncio.Interesses.Where(i => i.Status == Dominio.Enums.StatusInteresse.Aceita)
                 .ToList()
                 .ForEach(i => i.Recuir());
-            
+
             await _anuncioRepository.AtualizarAsync(anuncio);
 
             TempData["Erro"] = "Reserva desfeita. O anúncio voltou a ficar ativo na vitrine.";
@@ -261,10 +261,32 @@ namespace Daki.Web.Controllers
                     // 5. Array de segurança com os formatos permitidos
                     var extensoesPermitidas = new[] { ".jpg", ".jpeg", ".png" };
 
-                    string pastaUploads = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "anuncios");
+                    string pastaUploads;
+
+                    // Verifica se está rodando na nuvem da Azure
+                    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")))
+                    {
+                        // Adicionado o "site" no caminho
+                        pastaUploads = Path.Combine("/home/site", "uploads", "anuncios");
+                    }
+                    else
+                    {
+                        pastaUploads = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "anuncios");
+                    }
+
+                    // Cria a pasta se não existir e evita o erro do Path nulo
                     if (!Directory.Exists(pastaUploads))
                     {
-                        Directory.CreateDirectory(pastaUploads);
+                        try
+                        {
+                            Directory.CreateDirectory(pastaUploads);
+                        }
+                        catch
+                        {
+
+                        }
+
+
                     }
 
                     // 6. Percorre todos os arquivos enviados
